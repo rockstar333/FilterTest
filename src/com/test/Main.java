@@ -1,12 +1,13 @@
 package com.test;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
     private static final int numberOfSignalsPerProducer = 1000;
-    private static final int numberOfSignalsProducers = 100;
+    private static final int numberOfSignalsProducers = 10;
 
     private static class TestProducer extends Thread {
         private final Filter filter;
@@ -33,6 +34,7 @@ public class Main {
     }
 
     public static void main (String ... args) throws InterruptedException {
+        long start = System.nanoTime();
         final int N = 100;
         Filter filter = new SignalFilter(N);
 
@@ -47,6 +49,9 @@ public class Main {
         for (Thread producer : producers)
             producer.join();
 
+        long end = System.nanoTime();
+
+        System.out.println("Completed in " + TimeUnit.NANOSECONDS.toSeconds(end - start) + " seconds");
         System.out.println("Filter allowed " + totalPassed + " signals out of " + (numberOfSignalsPerProducer * numberOfSignalsProducers));
     }
 }
