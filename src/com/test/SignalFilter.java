@@ -17,7 +17,6 @@ public class SignalFilter implements Filter, Resetable {
     public SignalFilter (int limit) {
        this.limit = limit;
         this.count = new AtomicInteger(0);
-        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.scheduleAtFixedRate(new Runnable() {
 
             @Override
